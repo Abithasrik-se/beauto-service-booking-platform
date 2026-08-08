@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Beautician login — Beauto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card-beauto">
+      <h3 class="mb-1">Beautician login</h3>
+      <p class="text-muted small mb-3">View and manage your assigned orders.</p>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-beauto w-100">Sign in</button>
+      </form>
+      <p class="text-muted small mt-3 mb-0">New partner? <a href="{% url 'accounts:register_beautician' %}">Apply here</a></p>
+      <p class="text-muted small mt-1 mb-0">
+        <a href="{% url 'accounts:login_customer' %}">Customer login</a> ·
+        <a href="{% url 'accounts:login_admin' %}">Admin login</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

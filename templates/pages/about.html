@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}About — Beauto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h1 class="mb-3">About Beauto</h1>
+    <p class="text-muted" style="font-size: 1.05rem;">
+      Beauto connects customers with verified, independent beauty professionals for
+      makeup, mehndi, hair, skincare, and nail services — delivered at home, for
+      weddings, events, or an everyday touch-up.
+    </p>
+
+    <div class="row g-3 my-4">
+      <div class="col-md-4">
+        <div class="card-beauto h-100">
+          <h5>Verified beauticians</h5>
+          <p class="text-muted small mb-0">Every beautician is manually reviewed and approved by our team before they can accept a single order.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-beauto h-100">
+          <h5>Nearest-match booking</h5>
+          <p class="text-muted small mb-0">We match you with the closest available beautician for your exact date and time — automatically.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-beauto h-100">
+          <h5>Transparent pricing</h5>
+          <p class="text-muted small mb-0">Package price + a fixed platform fee, shown upfront — no surprise charges at your doorstep.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="h4 mt-4">How it works</h3>
+    <ol class="text-muted">
+      <li>Pick a service and package on our <a href="{% url 'pages:services' %}">Services</a> page.</li>
+      <li>Choose a date, time, and pin your address.</li>
+      <li>We match you with the nearest available, verified beautician.</li>
+      <li>Track your order status from your dashboard — reschedule or cancel any time before it's confirmed.</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}

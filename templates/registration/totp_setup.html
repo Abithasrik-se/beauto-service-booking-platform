@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Set up two-factor login — Beauto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card-beauto text-center">
+      <h3 class="mb-1">Set up two-factor authentication</h3>
+      <p class="text-muted small mb-3">Scan this with Google Authenticator (or any TOTP app), then enter the current code to confirm.</p>
+      <img src="{{ qr_data_uri }}" alt="TOTP QR code" style="width: 220px; height: 220px; margin: 0 auto 1rem;">
+      <p class="text-muted small">Can't scan? Enter this key manually:</p>
+      <code class="d-block mb-3" style="word-break: break-all;">{{ secret }}</code>
+
+      <form method="post" novalidate class="text-start">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label">{{ form.code.label }}</label>
+          {{ form.code }}
+          {% for error in form.code.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+        </div>
+        <button type="submit" class="btn btn-beauto w-100">Confirm &amp; enable 2FA</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

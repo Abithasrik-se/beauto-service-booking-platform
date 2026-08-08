@@ -1,0 +1,6 @@
+Hi {{ user.first_name|default:user.username }},
+
+Your email is verified! Your beautician profile is now under review by our admin team.
+You'll get another email as soon as you're approved and can start receiving bookings.
+
+— Team Beauto

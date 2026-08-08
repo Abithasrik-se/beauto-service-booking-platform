@@ -1,0 +1,39 @@
+{% extends "admin/_admin_base.html" %}
+{% block title %}Beautician approvals — Beauto{% endblock %}
+{% block admin_content %}
+<h1 class="mb-4">Beautician approvals</h1>
+{% if not profiles %}
+  <div class="card-beauto text-center text-muted">No applications to review.</div>
+{% endif %}
+<div class="row g-3">
+  {% for p in profiles %}
+    <div class="col-md-6">
+      <div class="card-beauto h-100">
+        <div class="d-flex justify-content-between align-items-start">
+          <h5 class="mb-1">{{ p.user.get_full_name|default:p.user.username }}</h5>
+          {% if p.is_approved %}
+            <span class="badge badge-status-completed px-2 py-1">Approved</span>
+          {% else %}
+            <span class="badge badge-status-pending px-2 py-1">Pending</span>
+          {% endif %}
+        </div>
+        <div class="text-muted small">{{ p.user.email }}{% if p.user.phone %} · {{ p.user.phone }}{% endif %}</div>
+        <div class="text-muted small">{{ p.address }}</div>
+        <div class="text-muted small">Skills: {% for s in p.skills.all %}{{ s.name }}{% if not forloop.last %}, {% endif %}{% empty %}—{% endfor %}</div>
+        <div class="text-muted small">Radius: {{ p.service_radius_km }} km · Available {{ p.available_from }}–{{ p.available_to }}</div>
+        {% if p.bio %}<p class="small mt-2 mb-2">{{ p.bio }}</p>{% endif %}
+        {% if not p.is_approved %}
+          <div class="mt-2">
+            <form method="post" action="{% url 'adminpanel:approve_beautician' p.pk %}" class="d-inline">
+              {% csrf_token %}<button class="btn btn-sm btn-beauto">Approve</button>
+            </form>
+            <form method="post" action="{% url 'adminpanel:reject_beautician' p.pk %}" class="d-inline">
+              {% csrf_token %}<button class="btn btn-sm btn-outline-danger">Reject</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

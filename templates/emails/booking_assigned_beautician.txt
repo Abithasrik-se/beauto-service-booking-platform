@@ -1,0 +1,12 @@
+Hi {{ booking.beautician.first_name|default:booking.beautician.username }},
+
+You've been assigned a new order:
+
+Service:    {{ booking.package.service.name }} ({{ booking.package.name }})
+Customer:   {{ booking.customer.get_full_name|default:booking.customer.username }}
+Slot:       {{ booking.slot_start }} – {{ booking.slot_end }}
+Address:    {{ booking.address }}
+
+Log in to your dashboard for details.
+
+— Team Beauto

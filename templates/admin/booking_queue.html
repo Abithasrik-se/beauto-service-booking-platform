@@ -1,0 +1,23 @@
+{% extends "admin/_admin_base.html" %}
+{% block title %}Assignment queue — Beauto{% endblock %}
+{% block admin_content %}
+<h1 class="mb-4">Unassigned bookings</h1>
+{% if not bookings %}
+  <div class="card-beauto text-center text-muted">Nothing waiting — every booking is assigned.</div>
+{% endif %}
+{% for b in bookings %}
+  <div class="card-beauto d-flex flex-row justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <h5 class="mb-1">{{ b.package.service.name }} <span class="text-muted small">({{ b.package.name }})</span></h5>
+      <div class="text-muted small">Customer: {{ b.customer.get_full_name|default:b.customer.username }}</div>
+      <div class="text-muted small">{{ b.slot_start }} → {{ b.slot_end }} · {{ b.address }}</div>
+    </div>
+    <div class="d-flex gap-2">
+      <form method="post" action="{% url 'adminpanel:auto_assign' b.pk %}">
+        {% csrf_token %}<button class="btn btn-sm btn-beauto">Auto-assign nearest</button>
+      </form>
+      <a href="{% url 'adminpanel:assign_booking' b.pk %}" class="btn btn-sm btn-outline-beauto">Assign manually</a>
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}

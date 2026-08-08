@@ -1,0 +1,6 @@
+Hi {{ user.first_name|default:user.username }},
+
+Thanks for applying to join Beauto. After review, we're unable to approve your profile
+at this time. Reply to this email if you believe this is a mistake.
+
+— Team Beauto

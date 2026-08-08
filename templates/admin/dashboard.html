@@ -1,0 +1,53 @@
+{% extends "admin/_admin_base.html" %}
+{% block title %}Admin overview — Beauto{% endblock %}
+{% block admin_content %}
+<h1 class="mb-4">Platform overview</h1>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ total_customers }}</div><div class="label">Customers</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ total_beauticians }}</div><div class="label">Beauticians</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ pending_approvals }}</div><div class="label">Pending approvals</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ pending_bookings }}</div><div class="label">Unassigned bookings</div></div></div>
+</div>
+<div class="row g-3 mb-4">
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ active_bookings }}</div><div class="label">Active bookings</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ completed_bookings }}</div><div class="label">Completed</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">{{ cancelled_bookings }}</div><div class="label">Cancelled</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">₹{{ gross_revenue }}</div><div class="label">Gross revenue (completed)</div></div></div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card-beauto">
+      <h6 class="text-muted mb-1">Platform fee revenue</h6>
+      <div class="value" style="font-size:1.5rem;">₹{{ platform_revenue }}</div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card-beauto">
+      <h6 class="text-muted mb-2">Quick actions</h6>
+      <a href="{% url 'adminpanel:beautician_approvals' %}" class="btn btn-sm btn-outline-beauto me-2">Review approvals</a>
+      <a href="{% url 'adminpanel:booking_queue' %}" class="btn btn-sm btn-outline-beauto me-2">Assign bookings</a>
+      <a href="{% url 'adminpanel:service_create' %}" class="btn btn-sm btn-outline-beauto">Add a service</a>
+    </div>
+  </div>
+</div>
+
+<div class="card-beauto">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <h5 class="mb-0">Recent activity</h5>
+    <a href="{% url 'adminpanel:notifications' %}" class="small">View all</a>
+  </div>
+  {% for n in recent_notifications %}
+    <div class="d-flex gap-2 py-2 border-bottom">
+      <div>{% if n.category == 'booking' %}📦{% elif n.category == 'beautician' %}🧑‍🎨{% elif n.category == 'signup' %}🆕{% else %}🔔{% endif %}</div>
+      <div>
+        <div class="small">{{ n.message }}</div>
+        <div class="text-muted" style="font-size: 0.75rem;">{{ n.created_at }}</div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted small mb-0">No activity yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

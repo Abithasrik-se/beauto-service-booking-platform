@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Services — Beauto{% endblock %}
+{% block content %}
+<h1 class="mb-1">Our Services</h1>
+<p class="text-muted mb-4">Pick a category, choose a package, and book your slot.</p>
+
+<div class="d-flex gap-2 flex-wrap mb-4">
+  <a href="{% url 'pages:services' %}" class="category-tab {% if not active_category_id %}active{% endif %}">All</a>
+  {% for cat in categories %}
+    <a href="?category={{ cat.pk }}" class="category-tab {% if active_category_id == cat.pk %}active{% endif %}">
+      {{ cat.icon }} {{ cat.name }}
+    </a>
+  {% endfor %}
+</div>
+
+{% if not services %}
+  <div class="card-beauto text-center text-muted">
+    No services found. Run <code>python manage.py seed_services</code> to load demo data.
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  {% for service in services %}
+    <div class="col-md-6">
+      <div class="card-beauto h-100">
+        <div class="d-flex justify-content-between align-items-start">
+          <h5 class="mb-1">{{ service.name }}</h5>
+          <span class="badge rounded-pill" style="background: var(--lavender); color: var(--violet-dark);">{{ service.category.icon }} {{ service.category.name }}</span>
+        </div>
+        <p class="text-muted small mb-3">{{ service.description }}</p>
+
+        <div class="d-flex flex-column gap-2">
+          {% for package in service.packages.all %}
+            {% if package.is_active %}
+              <div class="package-pill d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">{{ package.name }}</div>
+                  <div class="text-muted small">{{ package.duration_minutes }} min · {{ package.description|truncatewords:10 }}</div>
+                  <div class="small mt-1">₹{{ package.price }} + ₹{{ service.platform_fee }} platform fee = <strong>₹{{ package.total_amount }}</strong></div>
+                </div>
+                {% if user.is_authenticated and user.role == "customer" %}
+                  <a href="{% url 'bookings:book_package' package.pk %}" class="btn btn-sm btn-beauto text-nowrap">Book</a>
+                {% elif user.is_authenticated %}
+                  <span class="text-muted small">Customer login required</span>
+                {% else %}
+                  <a href="{% url 'accounts:login_customer' %}" class="btn btn-sm btn-outline-beauto text-nowrap">Login to book</a>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

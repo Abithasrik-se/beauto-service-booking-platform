@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Sign up — Beauto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h1 class="mb-4">How would you like to join Beauto?</h1>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <div class="card-beauto h-100">
+          <h4>I'm a customer</h4>
+          <p class="text-muted">Book beauty services and get matched with a nearby verified beautician.</p>
+          <a href="{% url 'accounts:register_customer' %}" class="btn btn-beauto">Sign up as customer</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card-beauto h-100">
+          <h4>I'm a beautician</h4>
+          <p class="text-muted">Register your profile, get approved by admin, and start receiving orders.</p>
+          <a href="{% url 'accounts:register_beautician' %}" class="btn btn-outline-beauto">Sign up as beautician</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

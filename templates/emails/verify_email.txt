@@ -1,0 +1,9 @@
+Hi {{ user.first_name|default:user.username }},
+
+Welcome to Beauto! Please verify your email address by clicking the link below:
+
+{{ link }}
+
+This link is single-use and tied to your account. If you didn't create this account, you can ignore this email.
+
+— Team Beauto

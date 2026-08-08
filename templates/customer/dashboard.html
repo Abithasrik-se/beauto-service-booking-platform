@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}My Bookings — Beauto{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="mb-0">My bookings</h1>
+  <a href="{% url 'pages:services' %}" class="btn btn-beauto">+ Book a service</a>
+</div>
+
+{% if not bookings %}
+  <div class="card-beauto text-center text-muted">You haven't booked anything yet.</div>
+{% endif %}
+
+{% for b in bookings %}
+  <div class="card-beauto d-flex flex-row justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <h5 class="mb-1">{{ b.package.service.name }} <span class="text-muted small">({{ b.package.name }})</span></h5>
+      <div class="text-muted small">{{ b.slot_start }} → {{ b.slot_end }}</div>
+      <div class="text-muted small">{{ b.address }}</div>
+      {% if b.beautician %}
+        <div class="small mt-1">Beautician: <strong>{{ b.beautician.get_full_name|default:b.beautician.username }}</strong></div>
+      {% endif %}
+      <div class="small mt-1">Total: <strong>₹{{ b.total_amount }}</strong></div>
+    </div>
+    <div class="text-end">
+      <span class="badge rounded-pill badge-status-{{ b.status }} px-3 py-2 mb-2 d-inline-block">{{ b.get_status_display }}</span>
+      {% if b.can_be_modified_by_customer %}
+        <div class="d-flex gap-2 justify-content-end">
+          <a href="{% url 'bookings:reschedule_booking' b.pk %}" class="btn btn-sm btn-outline-beauto">Reschedule</a>
+          <form method="post" action="{% url 'bookings:cancel_booking' b.pk %}">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-danger">Cancel</button>
+          </form>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}

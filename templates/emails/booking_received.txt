@@ -1,0 +1,12 @@
+Hi {{ booking.customer.first_name|default:booking.customer.username }},
+
+We've received your booking:
+
+Service:   {{ booking.package.service.name }} ({{ booking.package.name }})
+Slot:      {{ booking.slot_start }} – {{ booking.slot_end }}
+Address:   {{ booking.address }}
+Total:     ₹{{ booking.total_amount }}
+
+We're matching you with a nearby beautician now.
+
+— Team Beauto

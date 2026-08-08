@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Contact — Beauto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <h1 class="mb-3">Get in touch</h1>
+    <p class="text-muted mb-4">Questions about a booking, becoming a partner beautician, or anything else — reach out.</p>
+
+    <div class="card-beauto">
+      {# Demo contact form — not wired to email sending; wire this to notifications.emails
+         or a support inbox if you extend the project. #}
+      <form>
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-control" placeholder="Your name">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" placeholder="you@example.com">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Message</label>
+          <textarea class="form-control" rows="4" placeholder="How can we help?"></textarea>
+        </div>
+        <button type="button" class="btn btn-beauto" disabled title="Demo form — not wired up yet">Send message</button>
+      </form>
+    </div>
+
+    <div class="row g-3 mt-2">
+      <div class="col-md-4"><div class="stat-box"><div class="value">📧</div><div class="label">support@beauto.local</div></div></div>
+      <div class="col-md-4"><div class="stat-box"><div class="value">📞</div><div class="label">+91 00000 00000</div></div></div>
+      <div class="col-md-4"><div class="stat-box"><div class="value">🕒</div><div class="label">9 AM – 9 PM, every day</div></div></div>
+    </div>
+  </div>
+</div>
+{% endblock %}

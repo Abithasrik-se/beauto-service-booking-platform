@@ -1,0 +1,28 @@
+{% extends "admin/_admin_base.html" %}
+{% block title %}Assign booking — Beauto{% endblock %}
+{% block admin_content %}
+<h1 class="mb-1">Assign: {{ booking.package.service.name }}</h1>
+<p class="text-muted mb-4">{{ booking.slot_start }} → {{ booking.slot_end }} · {{ booking.address }}</p>
+
+<form method="post">
+  {% csrf_token %}
+  <div class="card-beauto">
+    <h5 class="mb-3">Nearby beauticians (sorted by distance)</h5>
+    {% if not candidates %}
+      <p class="text-muted">No approved beauticians found at all.</p>
+    {% endif %}
+    {% for c in candidates %}
+      <div class="form-check mb-2 p-2 rounded {% if not c.in_range or not c.available %}bg-light{% endif %}">
+        <input class="form-check-input" type="radio" name="beautician_id" value="{{ c.user.pk }}"
+               id="b{{ c.user.pk }}" {% if not c.in_range or not c.available %}disabled{% endif %}>
+        <label class="form-check-label" for="b{{ c.user.pk }}">
+          {{ c.user.get_full_name|default:c.user.username }} — {{ c.distance_km }} km away
+          {% if not c.in_range %}<span class="text-danger small">(out of service radius)</span>{% endif %}
+          {% if not c.available %}<span class="text-danger small">(busy at this slot)</span>{% endif %}
+        </label>
+      </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-beauto mt-3">Assign selected beautician</button>
+  </div>
+</form>
+{% endblock %}

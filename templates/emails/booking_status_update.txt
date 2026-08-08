@@ -1,0 +1,5 @@
+Hi {{ booking.customer.first_name|default:booking.customer.username }},
+
+Your booking for {{ booking.package.service.name }} on {{ booking.slot_start }} is now: {{ booking.get_status_display }}.
+
+— Team Beauto

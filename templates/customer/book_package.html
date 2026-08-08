@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Book {{ package.service.name }} — Beauto{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-7">
+    <div class="card-beauto mb-3">
+      <h5 class="mb-1">{{ package.service.name }} — {{ package.name }}</h5>
+      <p class="text-muted small mb-1">{{ package.description }}</p>
+      <p class="small mb-0">₹{{ package.price }} + ₹{{ package.service.platform_fee }} platform fee = <strong>₹{{ package.total_amount }}</strong> · {{ package.duration_minutes }} min</p>
+    </div>
+
+    <div class="card-beauto">
+      <h4 class="mb-3">Confirm your booking</h4>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+          <div class="mb-3">
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}
+            {% for error in field.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-beauto w-100">Confirm booking</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

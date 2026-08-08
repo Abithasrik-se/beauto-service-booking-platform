@@ -1,0 +1,9 @@
+Hi {{ booking.customer.first_name|default:booking.customer.username }},
+
+Your booking is confirmed with a beautician:
+
+Service:      {{ booking.package.service.name }} ({{ booking.package.name }})
+Beautician:   {{ booking.beautician.get_full_name|default:booking.beautician.username }}
+Slot:         {{ booking.slot_start }} – {{ booking.slot_end }}
+
+— Team Beauto

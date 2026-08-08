@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}My Orders — Beauto{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+  <h1 class="mb-0">My orders</h1>
+  <a href="{% url 'bookings:update_profile' %}" class="btn btn-outline-beauto">Update profile</a>
+</div>
+
+{% if profile and not profile.is_approved and not profile.rejected %}
+  <div class="alert" style="background: var(--lavender); color: var(--violet-dark);">
+    Your profile is awaiting admin approval — you'll start receiving orders once approved.
+  </div>
+{% elif profile.rejected %}
+  <div class="alert alert-danger">Your application was not approved. Contact support for details.</div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+  <div class="col-md-4"><div class="stat-box"><div class="value">{{ stats.total_customers }}</div><div class="label">Total customers served</div></div></div>
+  <div class="col-md-4"><div class="stat-box"><div class="value">{{ stats.completed_count }}</div><div class="label">Completed orders</div></div></div>
+  <div class="col-md-4"><div class="stat-box"><div class="value">{{ stats.pending_count }}</div><div class="label">Pending orders</div></div></div>
+</div>
+
+<ul class="nav nav-tabs mb-3" id="orderTabs" role="tablist">
+  <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#pending-tab" type="button">Pending ({{ stats.pending_count }})</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#completed-tab" type="button">Completed ({{ stats.completed_count }})</button></li>
+  <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#all-tab" type="button">All orders</button></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="pending-tab">
+    {% if not pending_orders %}
+      <div class="card-beauto text-center text-muted">No pending orders right now.</div>
+    {% endif %}
+    {% for o in pending_orders %}
+      <div class="card-beauto d-flex flex-row justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h5 class="mb-1">{{ o.package.service.name }} <span class="text-muted small">({{ o.package.name }})</span></h5>
+          <div class="text-muted small">{{ o.slot_start }} → {{ o.slot_end }}</div>
+          <div class="text-muted small">{{ o.address }}</div>
+          <div class="small mt-1">Customer: <strong>{{ o.customer.get_full_name|default:o.customer.username }}</strong></div>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="{{ o.maps_url }}" target="_blank" class="btn btn-sm btn-outline-beauto">📍 Navigate</a>
+          <form method="post" action="{% url 'bookings:mark_completed' o.pk %}">
+            {% csrf_token %}<button class="btn btn-sm btn-beauto">Mark completed</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="completed-tab">
+    {% if not completed_orders %}
+      <div class="card-beauto text-center text-muted">Nothing completed yet.</div>
+    {% endif %}
+    {% for o in completed_orders %}
+      <div class="card-beauto d-flex flex-row justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h5 class="mb-1">{{ o.package.service.name }} <span class="text-muted small">({{ o.package.name }})</span></h5>
+          <div class="text-muted small">{{ o.slot_start }}</div>
+          <div class="small mt-1">Customer: <strong>{{ o.customer.get_full_name|default:o.customer.username }}</strong></div>
+        </div>
+        <span class="badge rounded-pill badge-status-completed px-3 py-2">Completed</span>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="tab-pane fade" id="all-tab">
+    {% for o in all_orders %}
+      <div class="card-beauto d-flex flex-row justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <h5 class="mb-1">{{ o.package.service.name }} <span class="text-muted small">({{ o.package.name }})</span></h5>
+          <div class="text-muted small">{{ o.slot_start }}</div>
+        </div>
+        <span class="badge rounded-pill badge-status-{{ o.status }} px-3 py-2">{{ o.get_status_display }}</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

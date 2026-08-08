@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Beauto — Unleash Your Inner Glow{% endblock %}
+{% block content %}
+<div class="hero mb-5">
+  <span class="badge-cities">✨ Serving 15+ Indian cities</span>
+  <h1 class="mb-3">Unleash Your<br>Inner Glow.</h1>
+  <p class="mb-4" style="max-width: 560px; opacity: 0.9; font-size: 1.05rem;">
+    Book verified makeup, mehndi &amp; hair beauticians for weddings, events, and everyday
+    looks — they come to you.
+  </p>
+  <a href="{% url 'pages:services' %}" class="btn-hero-light me-2">Book Appointment</a>
+  {% if not user.is_authenticated %}
+    <a href="{% url 'accounts:register_beautician' %}" class="btn-hero-outline">Partner Registration</a>
+  {% endif %}
+</div>
+
+<div class="text-center mb-4">
+  <h2 class="h3">What we offer</h2>
+  <p class="text-muted">Popular categories, booked in under a minute.</p>
+</div>
+
+<div class="row g-3 mb-5">
+  {% for category in categories %}
+    <div class="col-md-4 col-6">
+      <a href="{% url 'pages:services' %}?category={{ category.pk }}" class="text-decoration-none">
+        <div class="card-beauto text-center h-100">
+          <div style="font-size: 2rem;">{{ category.icon }}</div>
+          <h5 class="mt-2 mb-0" style="font-family: 'Poppins', sans-serif; color: var(--charcoal);">{{ category.name }}</h5>
+        </div>
+      </a>
+    </div>
+  {% empty %}
+    <div class="col-12 text-center text-muted">
+      No categories yet — run <code>python manage.py seed_services</code> to add demo data.
+    </div>
+  {% endfor %}
+</div>
+
+<div class="row g-3 mb-5">
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">15+</div><div class="label">Cities served</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">100%</div><div class="label">Verified beauticians</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">&lt;60s</div><div class="label">To book a slot</div></div></div>
+  <div class="col-md-3 col-6"><div class="stat-box"><div class="value">Doorstep</div><div class="label">Bridal · Party · Everyday</div></div></div>
+</div>
+
+{% if featured_services %}
+<h2 class="h3 mb-3">Featured services</h2>
+<div class="row g-3">
+  {% for service in featured_services %}
+    <div class="col-md-4">
+      <div class="card-beauto h-100">
+        <h5>{{ service.name }}</h5>
+        <p class="text-muted small mb-2">{{ service.description|truncatewords:14 }}</p>
+        <p class="mb-2 small">Starting at <strong>₹{{ service.starting_price }}</strong> + platform fee</p>
+        <a href="{% url 'pages:services' %}?category={{ service.category_id }}" class="btn btn-sm btn-outline-beauto">View packages</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
