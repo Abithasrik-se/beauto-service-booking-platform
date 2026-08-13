@@ -1,4 +1,4 @@
-# Beauto — Service Booking Platform (Django)
+# Service Booking Platform (Django)
 
 An Urban-Company-style booking platform connecting **customers**, **beauticians**,
 and **admins**, built in Django with real role-based access control, email
